@@ -12,7 +12,7 @@ export const ENV: Cluster = (process.env.CLUSTER as Cluster) || "mainnet-beta";
 export const SOLANA_RPC_ENDPOINT =
   ENV === "devnet"
     ? "https://api.devnet.solana.com"
-    : "https://ssc-dao.tt-prod.net";
+    : "https://ssc-dao.genesysgo.net/";
 
 // Wallets
 export const WALLET_PRIVATE_KEY =
