@@ -1,0 +1,35 @@
+{
+  "name": "jupiter-core-example",
+  "version": "2.0.3",
+  "description": "",
+  "source": "src/index.ts",
+  "main": "dist/main.js",
+  "module": "dist/module.js",
+  "types": "dist/types.d.ts",
+  "scripts": {
+    "start": "ts-node ./src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@jup-ag/core": "^2.0.0-beta.3",
+    "@solana/wallet-adapter-base": "^0.9.10",
+    "@solana/web3.js": "^1.50.1",
+    "@types/bs58": "^4.0.1",
+    "@types/isomorphic-fetch": "^0.0.36",
+    "bs58": "^5.0.0",
+    "decimal.js": "^10.3.1",
+    "dotenv": "^16.0.1",
+    "isomorphic-fetch": "^3.0.0",
+    "jsbi": "^4.3.0",
+    "node-fetch": "^3.2.10",
+    "ts-node": "^10.9.1"
+  },
+  "devDependencies": {
+    "typescript": "^4.7.4"
+  },
+  "resolutions": {
+    "@solana/buffer-layout": "4.0.0"
+  }
+}
