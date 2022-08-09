@@ -82,24 +82,26 @@ const getRoutes = async ({
             amount: JSBI.BigInt(inputAmountInSmallestUnits), // raw input amount of tokens
             slippage,
             forceFetch: true,
+            onlyDirectRoutes: false
           })
         : null;
 
     if (routes && routes.routesInfos) {
       console.log("Possible number of routes:", routes.routesInfos.length);
       console.log(
-        "Best quote: ",
-        new Decimal(routes.routesInfos[0].outAmount.toString())
-          .div(10 ** outputToken.decimals)
-          .toString(),
+        "Best quote:",
+        JSBI.toNumber(routes.routesInfos[0].outAmount) /
+          10 ** outputToken.decimals,
         `(${outputToken.symbol})`
       );
+
       return routes;
     } else {
       return null;
     }
   } catch (error) {
-    throw error;
+    // throw ;
+    return null;
   }
 };
 
@@ -127,7 +129,7 @@ const executeSwap = async ({
         `inputAddress=${swapResult.inputAddress.toString()} outputAddress=${swapResult.outputAddress.toString()}`
       );
       console.log(
-        `inputAmount=${swapResult.inputAmount} outputAmount=${swapResult.outputAmount}`
+        `inputAmount=${swapResult.inputAmount.toString()} outputAmount=${swapResult.outputAmount.toString()}`
       );
     }
   } catch (error) {
@@ -206,7 +208,7 @@ async function getBestRouteToSelf(
     inputToken: token, // input token
     outputToken: token, // output token
     inputAmount: amount, // 5 USDC unit in UI
-    slippage: .2, // 0.2% slippage
+    slippage: 0.0, // 0% slippage
   });
   return routes?.routesInfos[0];
 }
@@ -218,10 +220,17 @@ async function tryToExecuteSwap(
 ) {
   const bestRoute = await getBestRouteToSelf(amount, token, jupiter);
 
-  const bestOutAmountWithSlippage = bestRoute?.otherAmountThreshold ?? 0;
-  const inputUSDCWithDecimals = amount * 10 ** 6;
+  // const bestoutAmountwithSlippage = JSBI.toNumber(bestRoute!.otherAmountThreshold) ?? 0;
+  const bestoutAmountwithSlippage = (bestRoute != undefined && 'otherAmountThreshold' in bestRoute) ? (JSBI.toNumber(bestRoute!.otherAmountThreshold) ?? 0) : 0;
+  const inputUSDCWithDecimals = token ? Math.round(amount * 10 ** token.decimals) : 0;
+  console.log(
+    bestoutAmountwithSlippage + "\n",
+    inputUSDCWithDecimals + "\n",
+    typeof bestoutAmountwithSlippage + "\n",
+    typeof inputUSDCWithDecimals + "\n"
+  );
   console.log("bestRoute", bestRoute);
-  if (bestOutAmountWithSlippage > inputUSDCWithDecimals) {
+  if (bestoutAmountwithSlippage > inputUSDCWithDecimals) {
     console.log("executing");
     await executeSwap({ jupiter, routeInfo: bestRoute! });
   }
