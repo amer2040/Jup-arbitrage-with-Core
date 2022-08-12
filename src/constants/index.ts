@@ -1,34 +1,39 @@
-import { Cluster } from "@solana/web3.js";
-import bs58 from "bs58";
-import { Keypair } from "@solana/web3.js";
+import { Cluster } from '@solana/web3.js';
+import bs58 from 'bs58';
+import { Keypair } from '@solana/web3.js';
 
-require("dotenv").config();
+require('dotenv').config();
 
 // Endpoints, connection
-export const ENV: Cluster = (process.env.CLUSTER as Cluster) || "mainnet-beta";
+export const ENV: Cluster = (process.env.CLUSTER as Cluster) || 'mainnet-beta';
 
 // Sometimes, your RPC endpoint may reject you if you spam too many RPC calls. Sometimes, your PRC server
 // may have invalid cache and cause problems.
 export const SOLANA_RPC_ENDPOINT =
-  ENV === "devnet"
-    ? "https://api.devnet.solana.com"
-    : "https://ssc-dao.genesysgo.net/";
+  ENV === 'devnet'
+    ? 'https://api.devnet.solana.com'
+    : 'https://ssc-dao.genesysgo.net/';
 
 // Wallets
 export const WALLET_PRIVATE_KEY =
-  process.env.WALLET_PRIVATE_KEY || "";
+  process.env.WALLET_PRIVATE_KEY || ' your private key wallet ';
+
 export const USER_PRIVATE_KEY = bs58.decode(WALLET_PRIVATE_KEY);
 export const USER_KEYPAIR = Keypair.fromSecretKey(USER_PRIVATE_KEY);
 
 // Token Mints
-export const INPUT_MINT_ADDRESS =
-  ENV === "devnet"
-    ? "So11111111111111111111111111111111111111112" // SOL
-    : "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"; // USDC
-export const OUTPUT_MINT_ADDRESS =
-  ENV === "devnet"
-    ? "SRMuApVNdxXokk5GT7XD5cUUgXMBCoAz2LHeuAoKWRt" // SRM
-    : "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB"; // USDT
+
+const USDC_MINT = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
+const USDT_MINT = 'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB';
+const UST_MINT = '9vMJfxuKxXBoEa7rM12mYLMwTacLMLDJqHozw96WQL8i';
+const SOL_MINT = 'So11111111111111111111111111111111111111112';
+const SCUM_MINT = 'cqNTpypmbwghrf1G9VGvSENcw7M7wGSQ7JS8UTQWXwb';
+const ETH_MINT = '7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs';
+const PAI_MINT ='Ea5SjE2Y6yvCeW5dYTn7PYMuW5ikXkvbGdcmSnXeaLjS';
+
+export const INPUT_MINT_ADDRESS = USDC_MINT;
+
+export const OUTPUT_MINT_ADDRESS = USDT_MINT;
 
 // Interface
 export interface Token {
